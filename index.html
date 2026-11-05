@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form, Size & Space — English for Graphic Design</title>
+<style>
+  :root{
+    --accent:#ff5a3c;
+    --accent2:#2f6bff;
+    --ok:#1e9e5a;
+    --bad:#d93636;
+    --card:rgba(255,255,255,0.93);
+    --ink:#16181d;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Segoe UI",Roboto,Arial,sans-serif;
+    color:var(--ink);
+    background:url("https://i.pinimg.com/originals/05/e9/89/05e989e2ce8c082531f8ebb45e882265.jpg") center/cover fixed no-repeat;
+    min-height:100vh;
+  }
+  /* затемняющая вуаль для читаемости */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background:linear-gradient(180deg,rgba(10,12,18,.72),rgba(10,12,18,.55) 40%,rgba(10,12,18,.78));
+    z-index:-1;
+  }
+  header.hero{
+    max-width:1080px;margin:0 auto;padding:56px 22px 26px;text-align:center;color:#fff;
+  }
+  header.hero h1{
+    font-size:clamp(26px,4.4vw,46px);margin:0 0 10px;letter-spacing:.5px;
+    text-shadow:0 3px 22px rgba(0,0,0,.6);
+  }
+  header.hero p{max-width:720px;margin:0 auto;opacity:.92;line-height:1.55;}
+  .badge{
+    display:inline-block;margin-bottom:14px;padding:7px 16px;border-radius:999px;
+    background:rgba(255,90,60,.9);font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:700;
+  }
+  /* прогресс */
+  .progress-wrap{
+    position:sticky;top:0;z-index:50;background:rgba(12,14,20,.86);backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(255,255,255,.12);
+  }
+  .progress-inner{
+    max-width:1080px;margin:0 auto;padding:10px 22px;display:flex;align-items:center;gap:14px;color:#fff;font-size:13px;
+  }
+  .bar{flex:1;height:9px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden;}
+  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),#ffb03c);transition:width .35s;}
+  /* контейнер */
+  main{max-width:1080px;margin:0 auto;padding:30px 22px 90px;}
+  .grid{display:grid;gap:22px;}
+  @media(min-width:860px){
+    .grid.two{grid-template-columns:1fr 1fr;}
+  }
+  /* карточки */
+  .card{
+    background:var(--card);border-radius:18px;padding:24px 24px 22px;
+    box-shadow:0 18px 40px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.4);
+    backdrop-filter:blur(4px);
+  }
+  .card h2{margin:0 0 6px;font-size:20px;line-height:1.3;}
+  .card h2 .num{
+    display:inline-grid;place-items:center;width:32px;height:32px;margin-right:10px;
+    border-radius:10px;background:var(--accent);color:#fff;font-size:15px;vertical-align:middle;
+  }
+  .task-note{font-size:13.5px;color:#5a5f6a;margin:0 0 14px;line-height:1.5;}
+
+  /* ====== Обёртка для изображений с fallback ====== */
+  .figure{
+    position:relative;
+    width:100%;
+    border-radius:14px;
+    overflow:hidden;
+    margin:0 0 16px;
+    box-shadow:0 10px 24px rgba(0,0,0,.25);
+    background:#1b1f2a;
+    aspect-ratio:16/9;
+  }
+  .figure.tall{aspect-ratio:4/3;}
+  .figure img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+    opacity:0;transition:opacity .4s;
+  }
+  .figure img.loaded{opacity:1;}
+  .figure .fallback{
+    position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+    color:#fff;padding:18px;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,90,60,.35), transparent 55%),
+      radial-gradient(circle at 70% 70%, rgba(47,107,255,.35), transparent 55%),
+      linear-gradient(135deg,#20242f,#12151c);
+  }
+  .figure .fallback svg{width:54px;height:54px;opacity:.85;margin-bottom:8px;}
+  .figure .fallback span{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;opacity:.85;}
+  .figure .caption{
+    position:absolute;left:0;right:0;bottom:0;padding:8px 12px;font-size:12.5px;color:#fff;
+    background:linear-gradient(180deg,transparent,rgba(0,0,0,.65));text-align:left;
+  }
+
+  /* поля */
+  input[type="text"], select{
+    font:inherit;padding:8px 10px;border-radius:9px;border:1.5px solid #cfd4dd;background:#fff;
+    outline:none;transition:border-color .15s, box-shadow .15s;
+  }
+  input[type="text"]:focus, select:focus{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(47,107,255,.18);}
+  .q{padding:10px 0;border-bottom:1px dashed #e2e5ec;line-height:1.6;}
+  .q:last-of-type{border-bottom:none;}
+  .q .inline{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;}
+  .blank{width:220px;}
+  /* таблицы */
+  table{width:100%;border-collapse:collapse;font-size:14.5px;}
+  th,td{border:1px solid #d9dde6;padding:8px 10px;vertical-align:top;}
+  th{background:#f1f3f8;text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#4a505c;}
+  td input{width:100%;}
+  /* кнопки */
+  .btn{
+    font:inherit;font-weight:700;cursor:pointer;border:none;border-radius:11px;padding:10px 18px;
+    background:var(--accent2);color:#fff;transition:transform .1s, filter .15s;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn:active{transform:scale(.98);}
+  .btn.ghost{background:#eef1f7;color:#2b3140;}
+  .btn.small{padding:7px 13px;font-size:13px;border-radius:9px;}
+  .actions{display:flex;gap:10px;align-items:center;margin-top:16px;flex-wrap:wrap;}
+  .result{font-size:13.5px;font-weight:700;padding:6px 12px;border-radius:99px;}
+  .result.ok{background:#e2f6ea;color:var(--ok);}
+  .result.bad{background:#fde8e8;color:var(--bad);}
+  .result.mid{background:#fff4dd;color:#a36a00;}
+  /* подсветка ответов */
+  .mark-ok{border-color:var(--ok)!important;box-shadow:0 0 0 3px rgba(30,158,90,.18)!important;background:#f2fbf6!important;}
+  .mark-bad{border-color:var(--bad)!important;box-shadow:0 0 0 3px rgba(217,54,54,.18)!important;background:#fff5f5!important;}
+  .hint{font-size:12.5px;color:#7a8090;margin-top:4px;}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0;}
+  .chip{background:#eef1f7;border-radius:99px;padding:4px 12px;font-size:13px;}
+  /* true/false */
+  .tf-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:9px 0;border-bottom:1px dashed #e2e5ec;}
+  .tf-row:last-child{border-bottom:none;}
+  .tf-opts{display:flex;gap:6px;}
+  .tf-opts label{
+    display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:9px;
+    border:1.5px solid #cfd4dd;background:#fff;cursor:pointer;font-size:13px;font-weight:600;
+  }
+  .tf-opts input{display:none;}
+  .tf-opts label:has(input:checked){background:var(--accent2);border-color:var(--accent2);color:#fff;}
+  .tf-opts label.correct{background:var(--ok)!important;border-color:var(--ok)!important;color:#fff!important;}
+  .tf-opts label.wrong{background:var(--bad)!important;border-color:var(--bad)!important;color:#fff!important;}
+  /* matching */
+  .match-row{display:grid;grid-template-columns:1fr 170px;gap:12px;align-items:center;padding:9px 0;border-bottom:1px dashed #e2e5ec;}
+  .match-row:last-child{border-bottom:none;}
+  /* text block */
+  .reading{background:#fafbfe;border-left:4px solid var(--accent2);padding:14px 16px;border-radius:0 12px 12px 0;font-size:14.5px;line-height:1.65;margin-bottom:16px;}
+  .reading b{color:var(--accent2);}
+  /* summary */
+  .summary{line-height:2.1;font-size:15px;}
+  .summary input{width:150px;}
+  footer{max-width:1080px;margin:0 auto;padding:0 22px 50px;color:#fff;opacity:.75;font-size:13px;text-align:center;}
+  .float-check{
+    position:fixed;right:18px;bottom:18px;z-index:60;
+    background:rgba(12,14,20,.9);color:#fff;border-radius:14px;padding:10px 14px;font-size:13px;
+    border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(6px);
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="badge">English for Graphic Design</span>
+  <h1>Form, Size &amp; Space in Graphic Design</h1>
+  <p>Интерактивный комплекс заданий: чтение, перевод, поиск информации. Впишите ответы и нажмите «Проверить» — сайт подсветит верные и неверные варианты и посчитает результат.</p>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <span>Прогресс проверки</span>
+    <div class="bar"><i id="progressBar"></i></div>
+    <span id="progressText">0%</span>
+  </div>
+</div>
+
+<main class="grid">
+
+  <!-- ============ TASK 1: VOCAB MATCH ============ -->
+  <section class="card" data-task="1">
+    <h2><span class="num">1</span>Vocabulary: Match the terms</h2>
+    <p class="task-note">Сопоставьте английский термин и русский эквивалент. Выберите вариант из списка.</p>
+    <figure class="figure">
+      <img src="https://picsum.photos/seed/formsize1/1000/560" alt="Design terms" loading="lazy"
+           onload="this.classList.add('loaded')" onerror="this.style.display='none'">
+      <div class="fallback">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><circle cx="17.5" cy="6.5" r="3.5"/><path d="M3 17l7-4 7 6"/><rect x="14" y="13" width="7" height="7" rx="1"/></svg>
+        <span>Form &amp; Shape</span>
+      </div>
+      <figcaption class="caption">Fundamental design terms</figcaption>
+    </figure>
+    <div class="grid two">
+      <div>
+        <div class="match-row">1. form <select data-ans="c"><option value="">—</option><option value="a">a) пространство</option><option value="b">b) масштаб, размер</option><option value="c">c) форма (объёмная)</option><option value="d">d) пропорция</option><option value="e">e) силуэт</option><option value="f">f) размер</option><option value="g">g) негативное пространство</option><option value="h">h) композиция</option><option value="i">i) форма (плоская)</option><option value="j">j) равновесие</option></select></div>
+        <div class="match-row">2. shape <select data-ans="i"><option value="">—</option><option value="a">a) пространство</option><option value="b">b) масштаб, размер</option><option value="c">c) форма (объёмная)</option><option value="d">d) пропорция</option><option value="e">e) силуэт</option><option value="f">f) размер</option><option value="g">g) негативное пространство</option><option value="h">h) композиция</option><option value="i">i) форма (плоская)</option><option value="j">j) равновесие</option></select></div>
+        <div class="match-row">3. size <select data-ans="f"><option value="">—</option><option value="a">a) пространство</option><option value="b">b) масштаб, размер</option><option value="c">c) форма (объёмная)</option><option value="d">d) пропорция</option><option value="e">e) силуэт</option><option value="f">f) размер</option><option value="g">g) негативное пространство</option><option value="h">h) композиция</option><option value="i">i) форма (плоская)</option><option value="j">j) равновесие</option></select></div>
+        <div class="match-row">4. space <select data-ans="a"><option value="">—</option><option value="a">a) пространство</option><option value="b">b) масштаб, размер</option><option value="c">c) форма (объёмная)</option><option value="d">d) пропорция</option><option value="e">e) силуэт</option><option value="f">f) размер</option><option value="g">g) негативное пространство</option><option value="h">h) композиция</option><option value="i">i) форма (плоская)</option><option value="j">j) равновесие</option></select></div>
+        <div class="match-row">5. scale <select data-ans="b"><option value="">—</option><option value="a">a) пространство</option><option value="b">b) масштаб, размер</option><option value="c">c) форма (объёмная)</option><option value="d">d) пропорция</option><option value="e">e) силуэт</option><option value="f">f) размер</option><option value="g">g) негативное пространство</option><option value="h">h) композиция</option><option value="i">i) форма (плоская)</option><option value="j">j) равновесие</option></select></div>
+      </div>
+      <div>
+        <div class="match-row">6. proportion <select data-ans="d"><option value="">—</option><option value="a">a) пространство</option><option value="b">b) масштаб, размер</option><option value="c">c) форма (объёмная)</option><option value="d">d) пропорция</option><option value="e">e) силуэт</option><option value="f">f) размер</option><option value="g">g) негативное пространство</option><option value="h">h) композиция</option><option value="i">i) форма (плоская)</option><option value="j">j) равновесие</option></select></div>
+        <div class="match-row">7. negative space <select data-ans="g"><option value="">—</option><option value="a">a) пространство</option><option value="b">b) масштаб, размер</option><option value="c">c) форма (объёмная)</option><option value="d">d) пропорция</option><option value="e">e) силуэт</option><option value="f">f) размер</option><option value="g">g) негативное пространство</option><option value="h">h) композиция</option><option value="i">i) форма (плоская)</option><option value="j">j) равновесие</option></select></div>
+        <div class="match-row">8. composition <select data-ans="h"><option value="">—</option><option value="a">a) пространство</option><option value="b">b) масштаб, размер</option><option value="c">c) форма (объёмная)</option><option value="d">d) пропорция</option><option value="e">e) силуэт</option><option value="f">f) размер</option><option value="g">g) негативное пространство</option><option value="h">h) композиция</option><option value="i">i) форма (плоская)</option><option value="j">j) равновесие</option></select></div>
+        <div class="match-row">9. silhouette <select data-ans="e"><option value="">—</option><option value="a">a) пространство</option><option value="b">b) масштаб, размер</option><option value="c">c) форма (объёмная)</option><option value="d">d) пропорция</option><option value="e">e) силуэт</option><option value="f">f) размер</option><option value="g">g) негативное пространство</option><option value="h">h) композиция</option><option value="i">i) форма (плоская)</option><option value="j">j) равновесие</option></select></div>
+        <div class="match-row">10. balance <select data-ans="j"><option value="">—</option><option value="a">a) пространство</option><option value="b">b) масштаб, размер</option><option value="c">c) форма (объёмная)</option><option value="d">d) пропорция</option><option value="e">e) силуэт</option><option value="f">f) размер</option><option value="g">g) негативное пространство</option><option value="h">h) композиция</option><option value="i">i) форма (плоская)</option><option value="j">j) равновесие</option></select></div>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="checkTask(1)">Проверить</button>
+      <button class="btn ghost small" onclick="resetTask(1)">Сбросить</button>
+      <span class="result" data-result="1"></span>
+    </div>
+  </section>
+
+  <!-- ============ TASK 2: FILL GAPS (definitions) ============ -->
+  <section class="card" data-task="2">
+    <h2><span class="num">2</span>Vocabulary in context</h2>
+    <p class="task-note">Впишите подходящий термин в пропуск (используйте слова из задания 1).</p>
+    <figure class="figure">
+      <img src="https://picsum.photos/seed/design2/1000/560" alt="Design workspace" loading="lazy"
+           onload="this.classList.add('loaded')" onerror="this.style.display='none'">
+      <div class="fallback">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 5h18v12H3z"/><path d="M8 21h8M12 17v4"/><path d="M7 9h6M7 13h10"/></svg>
+        <span>Vocabulary in Context</span>
+      </div>
+      <figcaption class="caption">Terms in use</figcaption>
+    </figure>
+    <div class="q">1. The designer used a large circle as the main <input class="blank" data-ans="shape|form" type="text" placeholder="..."> of the logo.</div>
+    <div class="q">2. The <input class="blank" data-ans="proportion" type="text" placeholder="..."> of the text to the image was carefully balanced.</div>
+    <div class="q">3. <input class="blank" data-ans="visual hierarchy|hierarchy" type="text" placeholder="..."> helps the viewer understand what to look at first.</div>
+    <div class="q">4. The <input class="blank" data-ans="negative space|white space" type="text" placeholder="..."> around the logo made it stand out more.</div>
+    <div class="q">5. The <input class="blank" data-ans="scale|size" type="text" placeholder="..."> of the poster was too small to read from a distance.</div>
+    <div class="q">6. The <input class="blank" data-ans="proportion" type="text" placeholder="..."> between the height and width of the rectangle was 2:1.</div>
+    <p class="hint">Подсказка: принимаются синонимы через «|»; регистр не важен.</p>
+    <div class="actions">
+      <button class="btn" onclick="checkTask(2)">Проверить</button>
+      <button class="btn ghost small" onclick="resetTask(2)">Сбросить</button>
+      <span class="result" data-result="2"></span>
+    </div>
+  </section>
+
+  <!-- ============ READING TEXT ============ -->
+  <section class="card" data-task="0">
+    <h2><span class="num">📖</span>Reading Text</h2>
+    <figure class="figure tall">
+      <img src="https://picsum.photos/seed/reading9/1000/750" alt="Graphic design composition" loading="lazy"
+           onload="this.classList.add('loaded')" onerror="this.style.display='none'">
+      <div class="fallback">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+        <span>Reading Text</span>
+      </div>
+      <figcaption class="caption">Form, Size &amp; Space — reading</figcaption>
+    </figure>
+    <div class="reading">
+      <b>Form, Size and Space in Graphic Design</b><br><br>
+      Graphic design is the art and practice of planning and projecting ideas and experiences with visual and textual content. Among the fundamental principles of design, <b>form, size, and space</b> play a crucial role in creating effective visual communication.<br><br>
+      <b>Form and Shape.</b> In graphic design, <b>form</b> refers to the overall structure of a design element. Forms can be <b>geometric</b> (circles, squares, triangles) or <b>organic</b> (irregular, natural shapes). Geometric forms convey order, stability, and precision, while organic forms suggest movement, creativity, and fluidity. <b>Shape</b> is closely related to form, but it usually refers to the two-dimensional outline of an object. Designers use shapes to create patterns, guide the viewer's eye, and establish a visual rhythm.<br><br>
+      <b>Size and Scale.</b> <b>Size</b> is the physical dimensions of an element, while <b>scale</b> refers to the relative size of an object in relation to other objects or to the overall composition. <b>Proportion</b> is the relationship between the sizes of different elements. A well-proportioned design feels balanced and harmonious. Designers often use scale to create <b>visual hierarchy</b> — making the most important element the largest so that it attracts attention first. For example, in a poster, the headline is usually much larger than the body text.<br><br>
+      <b>Space.</b> <b>Space</b> is the area around, between, and within the elements of a design. There are two types of space: <b>positive space</b> (the area occupied by the main objects) and <b>negative space</b> (the empty area around and between objects). Negative space, also called <b>white space</b>, is not "wasted" space — it is a powerful design tool. It helps to separate elements, improve readability, and create a sense of elegance and clarity. Skilled designers use negative space to draw attention to the main message and to give the design "room to breathe."<br><br>
+      <b>Balance and Composition.</b> The combination of form, size, and space creates <b>composition</b> — the arrangement of elements on the page. <b>Balance</b> can be <b>symmetrical</b> (elements are arranged evenly on both sides of an axis) or <b>asymmetrical</b> (elements are arranged unevenly but still create a sense of equilibrium). <b>Contrast</b> in size, form, and space helps to emphasize key elements and makes the design more dynamic.<br><br>
+      In conclusion, understanding form, size, and space is essential for any graphic designer. These principles help to create designs that are not only visually appealing but also communicate ideas clearly and effectively.
+    </div>
+  </section>
+
+  <!-- ============ TASK 3: TRUE / FALSE / NG ============ -->
+  <section class="card" data-task="3">
+    <h2><span class="num">3</span>Reading: True / False / Not Given</h2>
+    <p class="task-note">Прочитайте текст и отметьте утверждения: T (верно), F (неверно), NG (в тексте не сказано).</p>
+    <div class="tf-row"><div>1. Geometric forms convey order and stability.</div><div class="tf-opts"><label><input type="radio" name="tf1" value="T"><span>T</span></label><label><input type="radio" name="tf1" value="F"><span>F</span></label><label><input type="radio" name="tf1" value="NG"><span>NG</span></label></div></div>
+    <div class="tf-row"><div>2. Organic forms are always more popular than geometric forms.</div><div class="tf-opts"><label><input type="radio" name="tf2" value="T"><span>T</span></label><label><input type="radio" name="tf2" value="F"><span>F</span></label><label><input type="radio" name="tf2" value="NG"><span>NG</span></label></div></div>
+    <div class="tf-row"><div>3. Shape usually refers to the three-dimensional outline of an object.</div><div class="tf-opts"><label><input type="radio" name="tf3" value="T"><span>T</span></label><label><input type="radio" name="tf3" value="F"><span>F</span></label><label><input type="radio" name="tf3" value="NG"><span>NG</span></label></div></div>
+    <div class="tf-row"><div>4. Scale is the relative size of an object compared to other objects.</div><div class="tf-opts"><label><input type="radio" name="tf4" value="T"><span>T</span></label><label><input type="radio" name="tf4" value="F"><span>F</span></label><label><input type="radio" name="tf4" value="NG"><span>NG</span></label></div></div>
+    <div class="tf-row"><div>5. Visual hierarchy helps the viewer understand what to look at first.</div><div class="tf-opts"><label><input type="radio" name="tf5" value="T"><span>T</span></label><label><input type="radio" name="tf5" value="F"><span>F</span></label><label><input type="radio" name="tf5" value="NG"><span>NG</span></label></div></div>
+    <div class="tf-row"><div>6. Negative space is considered wasted space in design.</div><div class="tf-opts"><label><input type="radio" name="tf6" value="T"><span>T</span></label><label><input type="radio" name="tf6" value="F"><span>F</span></label><label><input type="radio" name="tf6" value="NG"><span>NG</span></label></div></div>
+    <div class="tf-row"><div>7. Symmetrical balance means elements are arranged unevenly.</div><div class="tf-opts"><label><input type="radio" name="tf7" value="T"><span>T</span></label><label><input type="radio" name="tf7" value="F"><span>F</span></label><label><input type="radio" name="tf7" value="NG"><span>NG</span></label></div></div>
+    <div class="tf-row"><div>8. Contrast in size, form, and space makes a design more dynamic.</div><div class="tf-opts"><label><input type="radio" name="tf8" value="T"><span>T</span></label><label><input type="radio" name="tf8" value="F"><span>F</span></label><label><input type="radio" name="tf8" value="NG"><span>NG</span></label></div></div>
+    <div class="tf-row"><div>9. The author believes that form, size, and space are the only principles of design.</div><div class="tf-opts"><label><input type="radio" name="tf9" value="T"><span>T</span></label><label><input type="radio" name="tf9" value="F"><span>F</span></label><label><input type="radio" name="tf9" value="NG"><span>NG</span></label></div></div>
+    <div class="tf-row"><div>10. Negative space improves readability.</div><div class="tf-opts"><label><input type="radio" name="tf10" value="T"><span>T</span></label><label><input type="radio" name="tf10" value="F"><span>F</span></label><label><input type="radio" name="tf10" value="NG"><span>NG</span></label></div></div>
+    <div class="actions">
+      <button class="btn" onclick="checkTask(3)">Проверить</button>
+      <button class="btn ghost small" onclick="resetTask(3)">Сбросить</button>
+      <span class="result" data-result="3"></span>
+    </div>
+  </section>
+
+  <!-- ============ TASK 4: SCANNING ============ -->
+  <section class="card" data-task="4">
+    <h2><span class="num">4</span>Scanning for specific information</h2>
+    <p class="task-note">Найдите ответы в тексте и запишите их кратко.</p>
+    <figure class="figure">
+      <img src="https://picsum.photos/seed/abstract4/1000/560" alt="Abstract shapes" loading="lazy"
+           onload="this.classList.add('loaded')" onerror="this.style.display='none'">
+      <div class="fallback">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="4"/><rect x="12" y="12" width="8" height="8" rx="1"/><path d="M4 20l6-6"/></svg>
+        <span>Abstract Shapes</span>
+      </div>
+      <figcaption class="caption">Geometric vs organic</figcaption>
+    </figure>
+    <div class="q">1. What are the two types of forms mentioned in the text?<div class="inline"><input class="blank" data-ans="geometric and organic|organic and geometric" type="text" placeholder="..."></div></div>
+    <div class="q">2. What does "scale" refer to?<div class="inline"><input class="blank" data-ans="relative size|relative size of an object" type="text" placeholder="..."></div></div>
+    <div class="q">3. What is another name for negative space?<div class="inline"><input class="blank" data-ans="white space" type="text" placeholder="..."></div></div>
+    <div class="q">4. What are the two types of balance?<div class="inline"><input class="blank" data-ans="symmetrical and asymmetrical|asymmetrical and symmetrical" type="text" placeholder="..."></div></div>
+    <div class="q">5. What is composition?<div class="inline"><input class="blank" data-ans="arrangement of elements|the arrangement of elements on the page" type="text" placeholder="..."></div></div>
+    <div class="q">6. Name three functions of negative space mentioned in the text.<div class="inline"><input class="blank" data-ans="separate elements, improve readability, create elegance|separates elements, improves readability, creates a sense of elegance and clarity|separate elements improve readability create elegance" type="text" placeholder="..."></div></div>
+    <div class="actions">
+      <button class="btn" onclick="checkTask(4)">Проверить</button>
+      <button class="btn ghost small" onclick="resetTask(4)">Сбросить</button>
+      <span class="result" data-result="4"></span>
+    </div>
+  </section>
+
+  <!-- ============ TASK 5: TABLE ============ -->
+  <section class="card" data-task="5">
+    <h2><span class="num">5</span>Information extraction: complete the table</h2>
+    <p class="task-note">Заполните таблицу информацией из текста (кратко, 1–2 слова или короткая фраза).</p>
+    <table>
+      <thead><tr><th style="width:22%">Concept</th><th style="width:39%">Definition</th><th style="width:39%">Function / Role</th></tr></thead>
+      <tbody>
+        <tr><td>Form</td><td><input data-ans="overall structure|structure of a design element" type="text"></td><td><input data-ans="conveys order stability|order and stability" type="text"></td></tr>
+        <tr><td>Shape</td><td><input data-ans="two-dimensional outline|2d outline|outline of an object" type="text"></td><td><input data-ans="creates patterns guides the eye|patterns, guides the eye" type="text"></td></tr>
+        <tr><td>Scale</td><td><input data-ans="relative size|relative size of an object" type="text"></td><td><input data-ans="creates visual hierarchy|visual hierarchy" type="text"></td></tr>
+        <tr><td>Proportion</td><td><input data-ans="relationship between sizes|relationship between the sizes of different elements" type="text"></td><td><input data-ans="balanced and harmonious|makes design balanced" type="text"></td></tr>
+        <tr><td>Negative space</td><td><input data-ans="empty area|empty area around and between objects" type="text"></td><td><input data-ans="separates elements improves readability|improves readability" type="text"></td></tr>
+        <tr><td>Visual hierarchy</td><td><input data-ans="order of importance|arrangement in order of importance" type="text"></td><td><input data-ans="shows what to look at first|guides attention" type="text"></td></tr>
+        <tr><td>Composition</td><td><input data-ans="arrangement of elements|arrangement of elements on the page" type="text"></td><td><input data-ans="overall structure|creates overall structure" type="text"></td></tr>
+        <tr><td>Balance</td><td><input data-ans="symmetrical or asymmetrical|even arrangement" type="text"></td><td><input data-ans="sense of equilibrium|equilibrium" type="text"></td></tr>
+      </tbody>
+    </table>
+    <p class="hint">Проверка гибкая: учитываются ключевые слова, порядок слов и регистр не важны.</p>
+    <div class="actions">
+      <button class="btn" onclick="checkTask(5)">Проверить</button>
+      <button class="btn ghost small" onclick="resetTask(5)">Сбросить</button>
+      <span class="result" data-result="5"></span>
+    </div>
+  </section>
+
+  <!-- ============ TASK 6: MATCH PARAGRAPHS ============ -->
+  <section class="card" data-task="6">
+    <h2><span class="num">6</span>Match paragraphs with main ideas</h2>
+    <p class="task-note">Соотнесите абзац и его главную мысль.</p>
+    <div class="match-row">1. Introduction <select data-ans="B"><option value="">—</option><option value="A">A. Size, scale and proportion create hierarchy</option><option value="B">B. Form, size and space are fundamental principles</option><option value="C">C. Balance and contrast in composition</option><option value="D">D. Geometric and organic forms; role of shape</option><option value="E">E. Positive and negative space</option></select></div>
+    <div class="match-row">2. Form and Shape <select data-ans="D"><option value="">—</option><option value="A">A. Size, scale and proportion create hierarchy</option><option value="B">B. Form, size and space are fundamental principles</option><option value="C">C. Balance and contrast in composition</option><option value="D">D. Geometric and organic forms; role of shape</option><option value="E">E. Positive and negative space</option></select></div>
+    <div class="match-row">3. Size and Scale <select data-ans="A"><option value="">—</option><option value="A">A. Size, scale and proportion create hierarchy</option><option value="B">B. Form, size and space are fundamental principles</option><option value="C">C. Balance and contrast in composition</option><option value="D">D. Geometric and organic forms; role of shape</option><option value="E">E. Positive and negative space</option></select></div>
+    <div class="match-row">4. Space <select data-ans="E"><option value="">—</option><option value="A">A. Size, scale and proportion create hierarchy</option><option value="B">B. Form, size and space are fundamental principles</option><option value="C">C. Balance and contrast in composition</option><option value="D">D. Geometric and organic forms; role of shape</option><option value="E">E. Positive and negative space</option></select></div>
+    <div class="match-row">5. Balance and Composition <select data-ans="C"><option value="">—</option><option value="A">A. Size, scale and proportion create hierarchy</option><option value="B">B. Form, size and space are fundamental principles</option><option value="C">C. Balance and contrast in composition</option><option value="D">D. Geometric and organic forms; role of shape</option><option value="E">E. Positive and negative space</option></select></div>
+    <div class="actions">
+      <button class="btn" onclick="checkTask(6)">Проверить</button>
+      <button class="btn ghost small" onclick="resetTask(6)">Сбросить</button>
+      <span class="result" data-result="6"></span>
+    </div>
+  </section>
+
+  <!-- ============ TASK 7: SUMMARY ============ -->
+  <section class="card" data-task="7">
+    <h2><span class="num">7</span>Complete the summary</h2>
+    <p class="task-note">Вставьте слова из рамки в пропуски (каждое слово — один раз).</p>
+    <div class="chips"><span class="chip">hierarchy</span><span class="chip">negative</span><span class="chip">geometric</span><span class="chip">composition</span><span class="chip">balance</span><span class="chip">proportion</span><span class="chip">organic</span><span class="chip">scale</span></div>
+    <figure class="figure">
+      <img src="https://picsum.photos/seed/geo7/1000/560" alt="Geometric composition" loading="lazy"
+           onload="this.classList.add('loaded')" onerror="this.style.display='none'">
+      <div class="fallback">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l9 16H3z"/><circle cx="7" cy="7" r="3"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>
+        <span>Geometric Composition</span>
+      </div>
+      <figcaption class="caption">Balance in layout</figcaption>
+    </figure>
+    <p class="summary">
+      Form, size, and space are fundamental principles of graphic design. Forms can be <input data-ans="geometric" type="text" class="blank"> or <input data-ans="organic" type="text" class="blank">. Size and <input data-ans="scale" type="text" class="blank"> help designers create visual <input data-ans="hierarchy" type="text" class="blank">. Space includes positive and <input data-ans="negative" type="text" class="blank"> space. The combination of these elements creates <input data-ans="composition" type="text" class="blank">, which can be symmetrical or asymmetrical, providing <input data-ans="balance" type="text" class="blank">. <input data-ans="proportion" type="text" class="blank"> is the relationship between the sizes of different elements.
+    </p>
+    <div class="actions">
+      <button class="btn" onclick="checkTask(7)">Проверить</button>
+      <button class="btn ghost small" onclick="resetTask(7)">Сбросить</button>
+      <span class="result" data-result="7"></span>
+    </div>
+  </section>
+
+  <!-- ============ TASK 8: TRANSLATION RU->EN ============ -->
+  <section class="card" data-task="8">
+    <h2><span class="num">8</span>Translation (RU → EN)</h2>
+    <p class="task-note">Переведите предложения на английский. Принимаются разные формулировки — проверяются ключевые слова.</p>
+    <div class="q">1. Геометрические формы передают порядок и стабильность.<div class="inline"><input class="blank" style="width:100%" data-ans="geometric forms convey order and stability|geometric forms convey order, stability" type="text" placeholder="..."></div></div>
+    <div class="q">2. Пропорция — это соотношение размеров разных элементов композиции.<div class="inline"><input class="blank" style="width:100%" data-ans="proportion is the relationship between the sizes|proportion is the ratio of the sizes" type="text" placeholder="..."></div></div>
+    <div class="q">3. Негативное пространство улучшает читаемость текста.<div class="inline"><input class="blank" style="width:100%" data-ans="negative space improves readability|negative space improves the readability of the text" type="text" placeholder="..."></div></div>
+    <div class="q">4. Визуальная иерархия помогает зрителю понять, на что смотреть в первую очередь.<div class="inline"><input class="blank" style="width:100%" data-ans="visual hierarchy helps the viewer understand what to look at first|visual hierarchy helps the viewer to understand what to look at first" type="text" placeholder="..."></div></div>
+    <div class="q">5. Асимметричное равновесие создаёт ощущение динамики.<div class="inline"><input class="blank" style="width:100%" data-ans="asymmetrical balance creates a sense of dynamics|asymmetrical balance creates a sense of dynamism" type="text" placeholder="..."></div></div>
+    <div class="actions">
+      <button class="btn" onclick="checkTask(8)">Проверить</button>
+      <button class="btn ghost small" onclick="resetTask(8)">Сбросить</button>
+      <span class="result" data-result="8"></span>
+    </div>
+  </section>
+
+  <!-- ============ TASK 9: WORD FORMATION ============ -->
+  <section class="card" data-task="9">
+    <h2><span class="num">9</span>Word formation</h2>
+    <p class="task-note">Образуйте правильную часть речи от слова в скобках.</p>
+    <div class="q">1. The <input data-ans="proportional" type="text" class="blank"> (proportion) use of space makes the design harmonious.</div>
+    <div class="q">2. <input data-ans="symmetrical" type="text" class="blank"> (symmetry) balance is often used in classic design.</div>
+    <div class="q">3. The <input data-ans="composition" type="text" class="blank"> (compose) of the poster is well-balanced.</div>
+    <div class="q">4. Negative space improves the <input data-ans="readability" type="text" class="blank"> (read) of the text.</div>
+    <div class="q">5. The designer created a strong visual <input data-ans="hierarchical" type="text" class="blank"> (hierarchy) structure.</div>
+    <div class="q">6. Organic forms add <input data-ans="fluidity" type="text" class="blank"> (fluid) to the design.</div>
+    <div class="q">7. The <input data-ans="contrasting" type="text" class="blank"> (contrast) colors make the logo stand out.</div>
+    <div class="actions">
+      <button class="btn" onclick="checkTask(9)">Проверить</button>
+      <button class="btn ghost small" onclick="resetTask(9)">Сбросить</button>
+      <span class="result" data-result="9"></span>
+    </div>
+  </section>
+
+  <!-- ============ TASK 10: COLLOCATIONS ============ -->
+  <section class="card" data-task="10">
+    <h2><span class="num">10</span>Collocations: match verb and noun</h2>
+    <p class="task-note">Составьте словосочетания из текста.</p>
+    <div class="match-row">1. convey <select data-ans="c"><option value="">—</option><option value="a">a) attention</option><option value="b">b) readability</option><option value="c">c) order / stability</option><option value="d">d) visual hierarchy</option><option value="e">e) visual rhythm</option><option value="f">f) key elements</option><option value="g">g) the viewer's eye</option><option value="h">h) ideas clearly</option></select></div>
+    <div class="match-row">2. create <select data-ans="d"><option value="">—</option><option value="a">a) attention</option><option value="b">b) readability</option><option value="c">c) order / stability</option><option value="d">d) visual hierarchy</option><option value="e">e) visual rhythm</option><option value="f">f) key elements</option><option value="g">g) the viewer's eye</option><option value="h">h) ideas clearly</option></select></div>
+    <div class="match-row">3. improve <select data-ans="b"><option value="">—</option><option value="a">a) attention</option><option value="b">b) readability</option><option value="c">c) order / stability</option><option value="d">d) visual hierarchy</option><option value="e">e) visual rhythm</option><option value="f">f) key elements</option><option value="g">g) the viewer's eye</option><option value="h">h) ideas clearly</option></select></div>
+    <div class="match-row">4. draw <select data-ans="a"><option value="">—</option><option value="a">a) attention</option><option value="b">b) readability</option><option value="c">c) order / stability</option><option value="d">d) visual hierarchy</option><option value="e">e) visual rhythm</option><option value="f">f) key elements</option><option value="g">g) the viewer's eye</option><option value="h">h) ideas clearly</option></select></div>
+    <div class="match-row">5. establish <select data-ans="e"><option value="">—</option><option value="a">a) attention</option><option value="b">b) readability</option><option value="c">c) order / stability</option><option value="d">d) visual hierarchy</option><option value="e">e) visual rhythm</option><option value="f">f) key elements</option><option value="g">g) the viewer's eye</option><option value="h">h) ideas clearly</option></select></div>
+    <div class="match-row">6. emphasize <select data-ans="f"><option value="">—</option><option value="a">a) attention</option><option value="b">b) readability</option><option value="c">c) order / stability</option><option value="d">d) visual hierarchy</option><option value="e">e) visual rhythm</option><option value="f">f) key elements</option><option value="g">g) the viewer's eye</option><option value="h">h) ideas clearly</option></select></div>
+    <div class="match-row">7. guide <select data-ans="g"><option value="">—</option><option value="a">a) attention</option><option value="b">b) readability</option><option value="c">c) order / stability</option><option value="d">d) visual hierarchy</option><option value="e">e) visual rhythm</option><option value="f">f) key elements</option><option value="g">g) the viewer's eye</option><option value="h">h) ideas clearly</option></select></div>
+    <div class="match-row">8. communicate <select data-ans="h"><option value="">—</option><option value="a">a) attention</option><option value="b">b) readability</option><option value="c">c) order / stability</option><option value="d">d) visual hierarchy</option><option value="e">e) visual rhythm</option><option value="f">f) key elements</option><option value="g">g) the viewer's eye</option><option value="h">h) ideas clearly</option></select></div>
+    <div class="actions">
+      <button class="btn" onclick="checkTask(10)">Проверить</button>
+      <button class="btn ghost small" onclick="resetTask(10)">Сбросить</button>
+      <span class="result" data-result="10"></span>
+    </div>
+  </section>
+
+  <!-- ============ TASK 11: FIND MISTAKES ============ -->
+  <section class="card" data-task="11">
+    <h2><span class="num">11</span>Find and correct mistakes</h2>
+    <p class="task-note">В резюме ниже 5 фактических ошибок. Впишите исправленные слова в поля.</p>
+    <div class="reading" style="border-left-color:var(--bad)">
+      Form, size, and space are <b>minor</b> principles of graphic design. <b>Organic</b> forms convey order and stability, while <b>geometric</b> forms suggest movement and creativity. <b>Scale</b> refers to the physical dimensions of an element, and <b>size</b> refers to the relative size of an object. Negative space, also called <b>black</b> space, is considered wasted space. Balance can only be symmetrical. Contrast in size, form, and space makes a design less dynamic.
+    </div>
+    <div class="q">1. «minor» → <input data-ans="fundamental" type="text" class="blank"></div>
+    <div class="q">2. «Organic forms convey order...» → <input data-ans="geometric" type="text" class="blank"> forms convey order and stability.</div>
+    <div class="q">3. «...geometric forms suggest movement» → <input data-ans="organic" type="text" class="blank"> forms suggest movement and creativity.</div>
+    <div class="q">4. «black space» → <input data-ans="white" type="text" class="blank"> space.</div>
+    <div class="q">5. «less dynamic» → <input data-ans="more dynamic" type="text" class="blank">.</div>
+    <div class="actions">
+      <button class="btn" onclick="checkTask(11)">Проверить</button>
+      <button class="btn ghost small" onclick="resetTask(11)">Сбросить</button>
+      <span class="result" data-result="11"></span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  English for Graphic Design · Form, Size &amp; Space · Interactive practice
+</footer>
+
+<div class="float-check" id="floatCheck">Проверено заданий: 0 / 11</div>
+
+<script>
+/* ================== ЛОГИКА ПРОВЕРКИ ================== */
+const TOTAL_TASKS = 11;
+const taskScores = {};
+
+function norm(s){
+  return String(s||"")
+    .toLowerCase()
+    .replace(/[.,;:!?"'«»–—-]/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function isCorrect(user, expected){
+  const u = norm(user);
+  if(!u) return false;
+  const variants = expected.split("|").map(norm);
+  return variants.some(v => {
+    if(u === v) return true;
+    if(v.length <= 30) return u.includes(v) || v.includes(u);
+    const vWords = v.split(" ").filter(w => w.length > 2);
+    const uWords = new Set(u.split(" ").filter(w => w.length > 2));
+    if(vWords.length === 0) return false;
+    const hit = vWords.filter(w => uWords.has(w)).length;
+    return hit / vWords.length >= 0.6;
+  });
+}
+
+function mark(el, ok){
+  el.classList.remove("mark-ok","mark-bad");
+  el.classList.add(ok ? "mark-ok" : "mark-bad");
+}
+
+function setResult(task, okCount, total){
+  const el = document.querySelector(`[data-result="${task}"]`);
+  if(!el) return;
+  const pct = Math.round(okCount/total*100);
+  el.textContent = `${okCount} / ${total} (${pct}%)`;
+  el.className = "result " + (pct === 100 ? "ok" : pct >= 60 ? "mid" : "bad");
+}
+
+function updateProgress(){
+  let done = 0;
+  for(let t=1;t<=TOTAL_TASKS;t++){
+    if(taskScores[t] && taskScores[t].checked) done++;
+  }
+  const pct = Math.round(done/TOTAL_TASKS*100);
+  document.getElementById("progressBar").style.width = pct + "%";
+  document.getElementById("progressText").textContent = pct + "%";
+  document.getElementById("floatCheck").textContent = `Проверено заданий: ${done} / ${TOTAL_TASKS}`;
+}
+
+function checkTask(task){
+  const section = document.querySelector(`section[data-task="${task}"]`);
+  if(!section) return;
+  let okCount = 0, total = 0;
+
+  section.querySelectorAll("select[data-ans]").forEach(sel => {
+    total++;
+    const ok = sel.value && sel.value === sel.dataset.ans;
+    if(ok) okCount++;
+    sel.classList.remove("mark-ok","mark-bad");
+    sel.classList.add(ok ? "mark-ok" : "mark-bad");
+  });
+
+  section.querySelectorAll("input[data-ans]").forEach(inp => {
+    total++;
+    const ok = isCorrect(inp.value, inp.dataset.ans);
+    if(ok) okCount++;
+    mark(inp, ok);
+  });
+
+  section.querySelectorAll(".tf-row").forEach((row, i) => {
+    const name = row.querySelector("input[type=radio]")?.name;
+    if(!name) return;
+    total++;
+    const answers = {1:"T",2:"NG",3:"F",4:"T",5:"T",6:"F",7:"F",8:"T",9:"F",10:"T"};
+    const idx = i + 1;
+    const expected = answers[idx];
+    const selected = row.querySelector(`input[name="${name}"]:checked`);
+    const labels = row.querySelectorAll(".tf-opts label");
+    labels.forEach(l => l.classList.remove("correct","wrong"));
+    if(selected){
+      const val = selected.value;
+      if(val === expected){ okCount++; selected.closest("label").classList.add("correct"); }
+      else {
+        selected.closest("label").classList.add("wrong");
+        labels.forEach(l => { if(l.querySelector("input").value === expected) l.classList.add("correct"); });
+      }
+    } else {
+      labels.forEach(l => { if(l.querySelector("input").value === expected) l.classList.add("correct"); });
+    }
+  });
+
+  if(total === 0) return;
+
+  taskScores[task] = {ok: okCount, total, checked: true};
+  setResult(task, okCount, total);
+  updateProgress();
+  section.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+function resetTask(task){
+  const section = document.querySelector(`section[data-task="${task}"]`);
+  if(!section) return;
+  section.querySelectorAll("input[type=text]").forEach(i => { i.value=""; i.classList.remove("mark-ok","mark-bad"); });
+  section.querySelectorAll("select").forEach(s => { s.value=""; s.classList.remove("mark-ok","mark-bad"); });
+  section.querySelectorAll("input[type=radio]").forEach(r => r.checked=false);
+  section.querySelectorAll(".tf-opts label").forEach(l => l.classList.remove("correct","wrong"));
+  const el = section.querySelector(`[data-result="${task}"]`);
+  if(el){ el.textContent=""; el.className="result"; }
+  if(taskScores[task]){ taskScores[task].checked = false; }
+  updateProgress();
+}
+
+updateProgress();
+</script>
+</body>
+</html>
